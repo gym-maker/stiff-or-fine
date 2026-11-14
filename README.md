@@ -1,8 +1,10 @@
 # Stiff or Fine?
 
-A 60-second browser game: is this work email phrase **stiff** (bossy, dated, passive-aggressive) or **fine**?
-Tap, swipe, or use the arrow keys. Streaks multiply points. A new daily challenge order every day, so friends can compare scores.
-English and Korean UI (`?lang=ko`, 영어 메일 감각 테스트).
+**Inbox Defense**: a 90-second office arcade game (받은편지함 지키기).
+Work emails fall into your inbox. Swipe through (slash) the **stiff**, bossy, passive-aggressive ones before they land, and let the **fine** ones in.
+Shred a fine one or let a stiff one land and the boss gets angrier: 😌 → 😒 → 😡 → 🤯. Chain slashes, combos, ☕ slow-mo, 🏝️ Out of Office.
+Same order for everyone each day (daily seed), so friends can compare scores. English and Korean UI (`?lang=ko`).
+Canvas 2D + WebAudio synth sounds + vibration, no assets to download.
 
 Play: https://gym-maker.github.io/stiff-or-fine/
 
