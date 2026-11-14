@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Stiff or Fine? The 60-second work email test</title>
+  <meta name="description" content="A 60-second game: is this work email phrase stiff and passive-aggressive, or fine? Tap fast, build a streak, get your rank, and compare today's daily score.">
+  <meta name="theme-color" content="#F5F0E8">
+  <link rel="canonical" href="https://gym-maker.github.io/stiff-or-fine/">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Send This Instead">
+  <meta property="og:title" content="Stiff or Fine? The 60-second work email test">
+  <meta property="og:description" content="Kindly revert? As per my last email? Tap Stiff or Fine as fast as you can. Get your rank and beat today's score.">
+  <meta property="og:url" content="https://gym-maker.github.io/stiff-or-fine/">
+  <meta property="og:image" content="https://gym-maker.github.io/stiff-or-fine/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Stiff or Fine? A 60-second game about work email phrases.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Stiff or Fine? The 60-second work email test">
+  <meta name="twitter:description" content="Kindly revert? As per my last email? Tap Stiff or Fine as fast as you can. Get your rank and beat today's score.">
+  <meta name="twitter:image" content="https://gym-maker.github.io/stiff-or-fine/og-image.png">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; script-src 'self'; img-src 'self' data: blob:; connect-src 'none'; base-uri 'none'; form-action 'none'">
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="game.js"></script>
+</head>
+<body>
+  <main class="app">
+    <header class="top">
+      <a class="brand" href="./" aria-label="Stiff or Fine? home"><span class="logo" aria-hidden="true">S</span><span data-i18n="brand">Stiff or Fine?</span></a>
+      <button type="button" id="lang" class="chip" aria-label="Switch language">한국어</button>
+    </header>
+
+    <!-- START -->
+    <section id="screen-start" class="screen" aria-labelledby="start-title">
+      <p class="kicker" data-i18n="kicker">The 60-second work email test</p>
+      <h1 id="start-title" data-i18n-html="title">Is it <span class="stiff">stiff</span> or <span class="fine">fine</span>?</h1>
+      <p class="lede" data-i18n="lede">You'll see real phrases from work emails. Some sound stiff, bossy, or passive-aggressive. Some are perfectly fine. Decide fast.</p>
+      <ul class="how">
+        <li data-i18n-html="how1"><kbd>←</kbd> or swipe left: <b class="stiff">Stiff</b></li>
+        <li data-i18n-html="how2"><kbd>→</kbd> or swipe right: <b class="fine">Fine</b></li>
+        <li data-i18n="how3">Streaks multiply your points. Wrong answers cost 2 seconds.</li>
+      </ul>
+      <div class="cta-row">
+        <button type="button" id="play-daily" class="btn primary"><span data-i18n="daily">Play today's challenge</span> <span id="daily-no" class="tag"></span></button>
+        <button type="button" id="play-practice" class="btn ghost" data-i18n="practice">Practice round</button>
+      </div>
+      <p id="best" class="muted small"></p>
+    </section>
+
+    <!-- GAME -->
+    <section id="screen-game" class="screen" hidden aria-label="Game">
+      <div class="hud">
+        <div class="stat"><span class="label" data-i18n="time">Time</span><span id="hud-time" class="val">60</span></div>
+        <div class="stat"><span class="label" data-i18n="score">Score</span><span id="hud-score" class="val">0</span></div>
+        <div class="stat"><span class="label" data-i18n="combo">Combo</span><span id="hud-combo" class="val">×1</span></div>
+      </div>
+      <div class="bar" aria-hidden="true"><span id="hud-bar"></span></div>
+      <div class="stage">
+        <article id="card" class="card" aria-live="polite">
+          <div class="mail-head" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="subj">Re: Re: Fwd: quick thing</span></div>
+          <p id="phrase" class="phrase"></p>
+          <div id="verdict" class="verdict" hidden></div>
+        </article>
+      </div>
+      <div class="answer-row">
+        <button type="button" id="btn-stiff" class="btn answer stiff-btn"><span aria-hidden="true">😬</span> <span data-i18n="stiff">Stiff</span></button>
+        <button type="button" id="btn-fine" class="btn answer fine-btn"><span data-i18n="fine">Fine</span> <span aria-hidden="true">👍</span></button>
+      </div>
+    </section>
+
+    <!-- RESULT -->
+    <section id="screen-result" class="screen" hidden aria-labelledby="rank-title">
+      <p id="res-mode" class="kicker"></p>
+      <h2 id="rank-title" class="rank"></h2>
+      <p id="rank-line" class="lede"></p>
+      <div class="scoreboard">
+        <div><span class="big" id="res-score">0</span><span class="label" data-i18n="score">Score</span></div>
+        <div><span class="big" id="res-acc">0%</span><span class="label" data-i18n="accuracy">Accuracy</span></div>
+        <div><span class="big" id="res-streak">0</span><span class="label" data-i18n="beststreak">Best streak</span></div>
+      </div>
+      <p id="res-grid" class="grid" aria-hidden="true"></p>
+
+      <img id="share-img" class="share-img" alt="Your result card" width="1080" height="1080">
+      <div class="share-row">
+        <button type="button" id="share-native" class="btn primary" data-i18n="share">Share result</button>
+        <span class="copy"><button type="button" id="share-copy" class="btn ghost" data-i18n="copy">Copy text</button><span id="copy-tip" class="tip" role="status"></span></span>
+        <a id="share-x" class="btn ghost" target="_blank" rel="noopener" data-i18n="onx">Post on X</a>
+        <a id="share-reddit" class="btn ghost" target="_blank" rel="noopener">Reddit</a>
+        <a id="share-dl" class="btn ghost" download="stiff-or-fine.png" data-i18n="save">Save image</a>
+      </div>
+
+      <div class="cta-row">
+        <button type="button" id="again" class="btn primary" data-i18n="again">Play again</button>
+      </div>
+
+      <details id="misses-box" class="misses">
+        <summary data-i18n="misses">What you missed, and what to send instead</summary>
+        <ol id="misses"></ol>
+      </details>
+
+      <aside class="promo">
+        <h3 data-i18n="promoTitle">Fix your own emails</h3>
+        <p data-i18n="promoBody">Paste a real draft into the free Email Phrase Fixer. It flags stiff phrases and suggests plainer ones. It runs in your browser and nothing is uploaded.</p>
+        <div class="cta-row">
+          <a id="cta-tool" class="btn primary" href="#" data-i18n="ctaTool">Open the free fixer</a>
+          <a id="cta-book" class="btn ghost" href="#" data-i18n="ctaBook">Get 5 free sample emails</a>
+        </div>
+      </aside>
+    </section>
+
+    <footer class="foot">
+      <p data-i18n-html="foot">Made by <a id="foot-link" href="#">Send This Instead</a>, with AI help. No sign-up, no tracking. Scores stay on your device.</p>
+    </footer>
+  </main>
+</body>
+</html>
