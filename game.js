@@ -4,13 +4,38 @@ import { createEngine } from "./engine.js";
 import { initAudio, setMuted, isMuted } from "./sfx.js";
 
 const SITE = "https://gym-maker.github.io/stiff-or-fine/";
-const UTM = "utm_source=game&utm_medium=web&utm_campaign=stiff_or_fine";
-const LINKS = {
-  tool: `https://gym-maker.github.io/email-phrase-fixer/?${UTM}`,
-  sample: `https://3368936654923.gumroad.com/l/pjgcqqj?${UTM}`,
-  book: `https://3368936654923.gumroad.com/l/efgbup?${UTM}`,
-  ko: `https://3368936654923.gumroad.com/l/tblbvl?${UTM}`,
+const LINK_BASE = {
+  tool: "https://gym-maker.github.io/email-phrase-fixer/",
+  sample: "https://3368936654923.gumroad.com/l/pjgcqqj",
+  book: "https://3368936654923.gumroad.com/l/efgbup",
+  ko: "https://3368936654923.gumroad.com/l/tblbvl",
 };
+function trafficSource() {
+  const q = new URLSearchParams(location.search);
+  const hinted = (q.get("src") || q.get("from") || "").toLowerCase();
+  if (hinted.includes("itch")) return "itch";
+  if (hinted.includes("gamejolt") || hinted === "gj") return "gamejolt";
+  const hay = `${location.hostname} ${document.referrer}`;
+  if (/itch\.(io|zone)|itch\.fun/i.test(hay)) return "itch";
+  if (/gamejolt\.(com|net|io)/i.test(hay)) return "gamejolt";
+  return "web";
+}
+function withUtm(url) {
+  const u = new URL(url);
+  u.searchParams.set("utm_source", "inbox_defense");
+  u.searchParams.set("utm_medium", "game");
+  u.searchParams.set("utm_campaign", "endscreen");
+  u.searchParams.set("utm_content", trafficSource());
+  return u.toString();
+}
+function applyCtas() {
+  $("cta-tool").href = withUtm(LINK_BASE.tool);
+  $("cta-sample").href = withUtm(LINK_BASE.sample);
+  $("cta-book").href = withUtm(lang === "ko" ? LINK_BASE.ko : LINK_BASE.book);
+  $("cta-sample").hidden = lang === "ko";
+  const foot = $("foot-link");
+  if (foot) foot.href = withUtm(lang === "ko" ? LINK_BASE.ko : LINK_BASE.book);
+}
 const pick = a => a[Math.floor(Math.random() * a.length)];
 
 const T = {
@@ -25,8 +50,8 @@ const T = {
     beststreak: "Best streak", share: "Share result", copy: "Copy text",
     copied: "Copied", copyFail: "Copy failed", onx: "Post on X", save: "Save image", again: "Play again",
     misses: "What went wrong, and what to send instead", promoTitle: "Fix your own emails",
-    promoBody: "Paste a real draft into the free Email Phrase Fixer. It flags stiff phrases and suggests plainer ones. It runs in your browser and nothing is uploaded.",
-    ctaTool: "Open the free fixer", ctaBook: "Get 5 free sample emails",
+    promoBody: "Paste a real draft into the free Email Phrase Fixer. It flags stiff phrases and suggests plainer ones. It runs in your browser and nothing is uploaded. You can also grab 5 free sample emails, or the $19 book Send This Instead.",
+    ctaTool: "Open the free Email Phrase Fixer", ctaSample: "Get 5 free sample emails", ctaBook: "Buy Send This Instead — $19",
     foot: 'Made by <a id="foot-link" href="#">Send This Instead</a>, with AI help. No sign-up, no tracking. Scores stay on your device.',
     langBtn: "한국어", tray: "📥 INBOX · the boss reads all of it", healed: "😌 Boss calmed down +❤️",
     chain: n => `${n}× CHAIN!`, combo: (s, m) => `${s} STREAK · ×${m}`, oopsFine: "That one was fine! 😱", oopsStiff: "Stiff email landed! 😬",
@@ -59,8 +84,8 @@ const T = {
     beststreak: "최고 연속", share: "결과 공유", copy: "텍스트 복사",
     copied: "복사됨", copyFail: "복사 실패", onx: "X에 올리기", save: "이미지 저장", again: "다시 하기",
     misses: "틀린 메일과 이렇게 쓰면 되는 표현", promoTitle: "내 메일도 고쳐 보기",
-    promoBody: "실제로 쓴 영어 메일을 무료 'Email Phrase Fixer'에 붙여 넣어 보세요. 딱딱한 표현을 찾아서 더 자연스러운 표현을 알려 줘요. 브라우저 안에서만 돌아가고 아무것도 업로드되지 않아요.",
-    ctaTool: "무료 교정기 열기", ctaBook: "전자책 『그대로 보내면 되는 영어 업무 메일 80개』",
+    promoBody: "실제로 쓴 영어 메일을 무료 Email Phrase Fixer에 붙여 넣어 보세요. 딱딱한 표현을 찾아서 더 자연스러운 표현을 알려 줘요. 브라우저 안에서만 돌아가고 아무것도 업로드되지 않아요. 더 많은 예문이 필요하면 $12 전자책 『그대로 보내면 되는 영어 업무 메일 80개』도 있어요.",
+    ctaTool: "무료 교정기 열기", ctaSample: "무료 샘플 메일 5통", ctaBook: "전자책 $12 · 『그대로 보내면 되는 영어 업무 메일 80개』",
     foot: '<a id="foot-link" href="#">Send This Instead</a>가 AI의 도움을 받아 만들었어요. 가입도 추적도 없고, 점수는 내 기기에만 저장돼요.',
     langBtn: "English", tray: "📥 받은편지함 · 부장님이 다 읽어요", healed: "😌 부장님 진정 +❤️",
     chain: n => `${n}연속 베기!`, combo: (s, m) => `${s}연속 · ×${m}`, oopsFine: "괜찮은 메일이었어요! 😱", oopsStiff: "딱딱한 메일 도착! 😬",
@@ -130,9 +155,7 @@ function applyLang() {
   $("lang").textContent = t("langBtn");
   $("lang").setAttribute("aria-label", lang === "ko" ? "Switch to English" : "한국어로 바꾸기");
   $("daily-no").textContent = `#${day}`;
-  $("cta-tool").href = LINKS.tool;
-  $("cta-book").href = lang === "ko" ? LINKS.ko : LINKS.sample;
-  $("foot-link").href = lang === "ko" ? LINKS.ko : LINKS.book;
+  applyCtas();
   showBest();
   if (state && !$("screen-result").hidden) renderResult();
 }
