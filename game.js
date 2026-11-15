@@ -14,22 +14,28 @@ function sampleUrl() {
   u.searchParams.set("utm_campaign", "stiff-or-fine");
   return u.toString();
 }
-function entryUrl() {
+function paidUrl() {
   const u = new URL("https://3368936654923.gumroad.com/l/lgxfey");
   u.searchParams.set("utm_source", "tools");
-  u.searchParams.set("utm_campaign", "stiff-or-fine_3usd");
+  u.searchParams.set("utm_campaign", "stiff-or-fine_paid");
+  return u.toString();
+}
+function bookUrl() {
+  const u = new URL("https://3368936654923.gumroad.com/l/efgbup");
+  u.searchParams.set("utm_source", "tools");
+  u.searchParams.set("utm_campaign", "stiff-or-fine_book");
   return u.toString();
 }
 function applyCtas() {
   $("cta-tool").href = LINK_BASE.tool;
-  $("cta-sample").href = sampleUrl();
-  $("cta-sample").hidden = false;
+  const sample = $("cta-sample");
+  if (sample) { sample.href = sampleUrl(); sample.hidden = false; }
   const foot = $("foot-link");
   if (foot) foot.href = sampleUrl();
-  const next = $("cta-next");
   const entry = $("cta-entry");
-  if (entry) entry.href = entryUrl();
-  if (next) next.hidden = lang !== "en";
+  if (entry) entry.href = paidUrl();
+  const book = $("cta-book");
+  if (book) book.href = bookUrl();
 }
 const pick = a => a[Math.floor(Math.random() * a.length)];
 
@@ -44,9 +50,12 @@ const T = {
     daily: "Play today's shift", practice: "Practice shift", score: "Score", shredded: "Shredded",
     beststreak: "Best streak", share: "Share result", copy: "Copy text",
     copied: "Copied", copyFail: "Copy failed", onx: "Post on X", save: "Save image", again: "Play again",
-    misses: "What went wrong, and what to send instead", promoTitle: "Fix your own emails",
-    promoBody: "If you write work emails in English, there is a free 5-template sample you can download. You can also paste a draft into the free Email Phrase Fixer; it flags stiff phrases and suggests plainer ones, and nothing is uploaded.",
-    ctaTool: "Open the free Email Phrase Fixer", ctaSample: "Send This Instead — free sample",
+    misses: "What went wrong, and what to send instead", promoTitle: "15 Hard Workplace Emails",
+    promoBody: "Fifteen ready-to-send workplace emails: decline, chase, apologize, resign, ask for a raise, and more. $3. You can also paste a draft into the free Email Phrase Fixer; it flags stiff phrases and suggests plainer ones, and nothing is uploaded.",
+    ctaTool: "Open the free Email Phrase Fixer",
+    ctaEntry: "Get the 15-email pack — $3",
+    ctaBook: 'The $19 book, Send This Instead, is also here: <a id="cta-book" href="#" target="_blank" rel="noopener">Send This Instead — the book</a>',
+    ctaSampleLine: 'A free 5-email sample is also here: <a id="cta-sample" href="#" target="_blank" rel="noopener">Send This Instead — free sample</a>',
     foot: 'Made by <a id="foot-link" href="#">Send This Instead</a>, with AI help. No sign-up, no tracking. Scores stay on your device.',
     langBtn: "한국어", tray: "📥 INBOX · the boss reads all of it", healed: "😌 Boss calmed down +❤️",
     chain: n => `${n}× CHAIN!`, combo: (s, m) => `${s} STREAK · ×${m}`, oopsFine: "That one was fine! 😱", oopsStiff: "Stiff email landed! 😬",
@@ -78,9 +87,12 @@ const T = {
     daily: "오늘의 근무 시작", practice: "연습 근무", score: "점수", shredded: "파쇄",
     beststreak: "최고 연속", share: "결과 공유", copy: "텍스트 복사",
     copied: "복사됨", copyFail: "복사 실패", onx: "X에 올리기", save: "이미지 저장", again: "다시 하기",
-    misses: "틀린 메일과 이렇게 쓰면 되는 표현", promoTitle: "내 메일도 고쳐 보기",
-    promoBody: "영어로 업무 메일을 쓸 때 참고할 수 있는 무료 샘플 5편이 있어요. 실제로 쓴 영어 메일은 무료 Email Phrase Fixer에 붙여 넣을 수도 있어요. 딱딱한 표현을 찾아서 더 자연스러운 표현을 알려 주고, 아무것도 업로드되지 않아요.",
-    ctaTool: "무료 교정기 열기", ctaSample: "Send This Instead 무료 샘플",
+    misses: "틀린 메일과 이렇게 쓰면 되는 표현", promoTitle: "15 Hard Workplace Emails",
+    promoBody: "거절, 독촉, 사과, 퇴사, 연봉 협상 등 보내기 어려운 업무 메일 15편이 들어 있는 $3 팩입니다. 실제로 쓴 영어 메일은 무료 Email Phrase Fixer에 붙여 넣을 수도 있어요. 딱딱한 표현을 찾아서 더 자연스러운 표현을 알려 주고, 아무것도 업로드되지 않아요.",
+    ctaTool: "무료 교정기 열기",
+    ctaEntry: "15편 메일 팩 받기 — $3",
+    ctaBook: '$19 책 Send This Instead도 있어요: <a id="cta-book" href="#" target="_blank" rel="noopener">Send This Instead — 책</a>',
+    ctaSampleLine: '무료 업무 메일 샘플 5편도 있어요: <a id="cta-sample" href="#" target="_blank" rel="noopener">Send This Instead 무료 샘플</a>',
     foot: '<a id="foot-link" href="#">Send This Instead</a>가 AI의 도움을 받아 만들었어요. 가입도 추적도 없고, 점수는 내 기기에만 저장돼요.',
     langBtn: "English", tray: "📥 받은편지함 · 부장님이 다 읽어요", healed: "😌 부장님 진정 +❤️",
     chain: n => `${n}연속 베기!`, combo: (s, m) => `${s}연속 · ×${m}`, oopsFine: "괜찮은 메일이었어요! 😱", oopsStiff: "딱딱한 메일 도착! 😬",
