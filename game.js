@@ -14,12 +14,22 @@ function sampleUrl() {
   u.searchParams.set("utm_campaign", "stiff-or-fine");
   return u.toString();
 }
+function entryUrl() {
+  const u = new URL("https://3368936654923.gumroad.com/l/lgxfey");
+  u.searchParams.set("utm_source", "tools");
+  u.searchParams.set("utm_campaign", "stiff-or-fine_3usd");
+  return u.toString();
+}
 function applyCtas() {
   $("cta-tool").href = LINK_BASE.tool;
   $("cta-sample").href = sampleUrl();
   $("cta-sample").hidden = false;
   const foot = $("foot-link");
   if (foot) foot.href = sampleUrl();
+  const next = $("cta-next");
+  const entry = $("cta-entry");
+  if (entry) entry.href = entryUrl();
+  if (next) next.hidden = lang !== "en";
 }
 const pick = a => a[Math.floor(Math.random() * a.length)];
 

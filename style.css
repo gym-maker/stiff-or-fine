@@ -86,3 +86,6 @@ body.playing .app{width:100%;max-width:640px;padding:0;min-height:100dvh}
 .foot{margin-top:auto;padding-top:20px;font-size:13px;color:var(--mute);text-align:center}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:opacity .15s!important}}
 :lang(ko) h1,:lang(ko) .lede,:lang(ko) .how,:lang(ko) .rank{word-break:keep-all}
+
+.promo .next-step{margin:10px 0 0;font-size:13px;color:var(--mute);line-height:1.45;font-weight:400}
+.promo .next-step a{color:var(--pine);text-decoration:underline;text-underline-offset:3px}
